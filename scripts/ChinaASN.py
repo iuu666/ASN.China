@@ -5,14 +5,16 @@ from datetime import datetime, timedelta
 
 def init_file(filename):
     """初始化文件，写入文件头部信息"""
-    if not os.path.exists(filename):  # 仅当文件不存在时才创建
-        local_time = datetime.utcnow() + timedelta(hours=8)  # 将 UTC 时间转换为 CST 时间
-        local_time_str = local_time.strftime("%Y-%m-%d %H:%M:%S")
-        header_info = f"// {os.path.basename(filename)}. (https://github.com/iuu666/ASN.China)\n"
-        header_info += f"// Last Updated: CST {local_time_str}\n"
-        header_info += "// Made by iuu, All rights reserved.\n\n"
+    local_time = datetime.utcnow() + timedelta(hours=8)  # 将 UTC 时间转换为 CST 时间
+    local_time_str = local_time.strftime("%Y-%m-%d %H:%M:%S")
+    header_info = f"// {os.path.basename(filename)}. (https://github.com/iuu666/ASN.China)\n"
+    header_info += f"// Last Updated: CST {local_time_str}\n"
+    header_info += "// Made by iuu, All rights reserved.\n"
+    
+    # 仅当文件不存在时才创建
+    if not os.path.exists(filename):
         with open(filename, "w", encoding='utf-8') as file:
-            file.write(header_info)
+            file.write(header_info + "\n")  # 在写入头部信息后加一个换行
 
 def fetch_asn_data(url):
     """从指定 URL 抓取 ASN 数据"""
@@ -54,10 +56,11 @@ def update_asn_file(filename, asn_list):
     all_asns = existing_asns.union(new_asns)
     
     with open(filename, "w", encoding='utf-8') as file:
-        # Write header if file was newly created
+        # 写入头部信息，仅当文件为空时
         if not existing_asns:
             init_file(filename)
         
+        # 确保不重复，按顺序写入数据
         for asn_info in sorted(all_asns):
             file.write(asn_info + "\n")
 

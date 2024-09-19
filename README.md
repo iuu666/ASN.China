@@ -1,13 +1,13 @@
 # ChinaASN and IP
 - 每日自动更新
 
-\n
+
 ## 数据源
 ### ASN： [bgp.he.net](https://bgp.he.net/country/CN)
 
 ### IP： [cbuijs/ipasn](https://github.com/cbuijs/ipasn)
 
-\n
+
 ## 应用中使用
 ### Surge
 ```

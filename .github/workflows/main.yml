@@ -1,60 +1,31 @@
 name: Update ASN and IP List
 
-on:
+on: 
   push:
-    paths:
-      - 'scripts/**'
   workflow_dispatch:
   schedule:
     - cron: "00 23 * * *"
 
 permissions:
   contents: write
-
 jobs:
-  update:
+  build: 
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
-
       - name: Set up Python 3.8
         uses: actions/setup-python@v4
         with:
           python-version: 3.8
-
-      - name: Cache pip
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('scripts/**/*.py') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
       - name: Install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
           python -m pip install --upgrade pip
           pip install requests lxml
-
-      - name: Run IP Update Script
+      - name: Run Python
         run: |
-          source venv/bin/activate
           python scripts/ChinaIP.py
-        continue-on-error: true
-
-      - name: Run ASN Update Script
-        run: |
-          source venv/bin/activate
           python scripts/ChinaASN.py
-        continue-on-error: true
-
-      - name: Check for errors
-        if: failure()
-        run: echo "Error occurred while running scripts" && exit 1
-
-      - name: Auto-commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: Update IP and ASN Lists
+          commit_message: Update IP List

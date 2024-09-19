@@ -24,5 +24,5 @@ RULE-SET, https://raw.githubusercontent.com/iuu666/ASN.China/main/ASN.China.list
 ```
 [filter_remote]
 # ChinaASN
-https://raw.githubusercontent.com/missuo/ASN-China/main/ASN.China.list, tag=ChinaASN, force-policy=direct, update-interval=86400, opt-parser=true, enabled=true
+https://raw.githubusercontent.com/iuu666/ASN.China/main/IP.China.list, tag=ChinaASN, force-policy=direct, update-interval=86400, opt-parser=true, enabled=true
 ```

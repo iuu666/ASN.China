@@ -8,7 +8,7 @@ def get_header(file_name):
     utc_time = datetime.utcnow()  # 获取当前的 UTC 时间
     china_time = utc_time + timedelta(hours=8)  # 转换为 CST (UTC+8)
     local_time = china_time.strftime("%Y-%m-%d %H:%M:%S")  # 格式化时间为字符串
-    # 根据文件名生成相应的头部信息，不包括 "ASN Information in"
+    # 根据文件名生成相应的头部信息
     header = f"""\
 # {file_name.replace('.list', '')} (https://github.com/iuu666/ASN.China)
 # Last Updated: CST {local_time}

@@ -1,12 +1,14 @@
 import requests
 from lxml import etree
-import time
+from datetime import datetime, timedelta
 
 def initFile():
-    localTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    utcTime = datetime.utcnow()  # 获取当前的 UTC 时间
+    chinaTime = utcTime + timedelta(hours=8)  # 转换为 CST (UTC+8)
+    localTime = chinaTime.strftime("%Y-%m-%d %H:%M:%S")  # 格式化时间为字符串
     with open("ASN.China.list", "w") as asnFile:
         asnFile.write("// ASN Information in China. (https://github.com/iuu666/ASN.China) \n")
-        asnFile.write("// Last Updated: UTC " + localTime +"\n")
+        asnFile.write("// Last Updated: CST " + localTime + "\n")
         asnFile.write("// Made by iuu, All rights reserved. " + "\n\n")
         
 def saveLatestASN():
@@ -21,7 +23,7 @@ def saveLatestASN():
     for asn in asns:
         asnNumber = asn.xpath('td[1]/a')[0].text.replace('AS', '')
         asnName = asn.xpath('td[2]')[0].text
-        if asnName != None:
+        if asnName is not None:
             asnInfo = "IP-ASN,{} // {}".format(asnNumber, asnName)
             with open("ASN.China.list", "a", encoding='utf-8') as asnFile:
                 asnFile.write(asnInfo)

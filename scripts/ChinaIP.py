@@ -1,14 +1,3 @@
-'''
-Author: Vincent Young
-Date: 2022-11-17 02:14:24
-LastEditors: Vincent Young
-LastEditTime: 2022-11-17 03:19:20
-FilePath: /ASN-China/syncIP.py
-Telegram: https://t.me/missuo
-
-Copyright © 2022 by Vincent, All Rights Reserved. 
-'''
-
 import requests
 from lxml import etree
 import json

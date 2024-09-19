@@ -1,25 +1,12 @@
-'''
-Author: Vincent Young
-Date: 2022-11-17 02:29:30
-LastEditors: Vincent Young
-LastEditTime: 2022-11-17 03:46:25
-FilePath: /ASN-China/scripts/ChinaASN.py
-Telegram: https://t.me/missuo
-
-Copyright © 2022 by Vincent, All Rights Reserved. 
-'''
 import requests
 from lxml import etree
 import time
-
 
 def initFile():
     localTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     with open("ASN.China.list", "w") as asnFile:
         asnFile.write("// ASN Information in China. (https://github.com/iuu666/ASN.China) \n")
         asnFile.write("// Last Updated: UTC " + localTime + "\n")
-        asnFile.write("// Made by Vincent, All rights reserved. " + "\n\n")
-
 
 def saveLatestASN():
     url = "https://bgp.he.net/country/CN"
@@ -38,6 +25,5 @@ def saveLatestASN():
             with open("ASN.China.list", "a", encoding='utf-8') as asnFile:
                 asnFile.write(asnInfo)
                 asnFile.write("\n")
-
 
 saveLatestASN()

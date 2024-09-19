@@ -1,13 +1,11 @@
-# ChinaASN or ChinaIP
+# ChinaASN
 ChinaASN和IP数据库的实时更新
 
 
-## Features
+## 特征
 - 每日自动更新
-- 可靠且准确的来源
-
-
-## Data Source
+- 数据来源：
+- 
 ### ASN Information
 - [bgp.he.net](https://bgp.he.net/country/CN)
 

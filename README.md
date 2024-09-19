@@ -16,13 +16,13 @@ ChinaASN和IP数据库的实时更新
 ### Surge
 ```
 [Rule]
-# ASN.China
+# ChinaASN
 RULE-SET, https://raw.githubusercontent.com/iuu666/ASN.China/main/ASN.China.list, Direct
 ```
 
 ### Quantumult X
 ```
 [filter_remote]
-# ASN.China
+# ChinaASN
 https://raw.githubusercontent.com/missuo/ASN-China/main/ASN.China.list, tag=ChinaASN, force-policy=direct, update-interval=86400, opt-parser=true, enabled=true
 ```

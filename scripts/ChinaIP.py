@@ -16,7 +16,7 @@ with open("IP.China.list", "w", ) as allChinaIP:
     for i in x:
         allChinaIP.write(i)
         allChinaIP.write('\n')
-#
+
 r = requests.get(v4China)
 tree = etree.HTML(r.text)
 asns = tree.xpath('//*[@data-target="react-app.embeddedData"]')[0].text

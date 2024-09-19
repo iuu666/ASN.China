@@ -1,78 +1,30 @@
-import os
 import requests
 from lxml import etree
-from datetime import datetime, timedelta
+import time
 
-def init_file(filename):
-    """初始化文件，写入文件头部信息"""
-    local_time = datetime.utcnow() + timedelta(hours=8)  # 将 UTC 时间转换为 CST 时间
-    local_time_str = local_time.strftime("%Y-%m-%d %H:%M:%S")
-    header_info = f"// {os.path.basename(filename)}. (https://github.com/iuu666/ASN.China)\n"
-    header_info += f"// Last Updated: CST {local_time_str}\n"
-    header_info += "// Made by iuu, All rights reserved.\n"
-    
-    # 仅当文件不存在时才创建
-    if not os.path.exists(filename):
-        with open(filename, "w", encoding='utf-8') as file:
-            file.write(header_info + "\n")  # 在头部信息后添加一个空白行
-
-def fetch_asn_data(url):
-    """从指定 URL 抓取 ASN 数据"""
-    headers = {
-        "User-Agent": "Mozilla/5.0"
-    }
-    try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-    except requests.RequestException as e:
-        print(f"Error fetching data: {e}")
-        return None
-    return response.text
-
-def parse_asn_data(html):
-    """解析 ASN 数据并返回 ASN 列表"""
-    tree = etree.HTML(html)
-    asns = tree.xpath('//table[@id="asns"]/tbody/tr')
-    asn_list = []
-    for asn in asns:
-        try:
-            asn_number = asn.xpath('td[1]/a/text()')[0].replace('AS', '')
-            asn_name = asn.xpath('td[2]/text()')
-            if asn_name:
-                asn_info = f"IP-ASN,{asn_number} // {asn_name[0].strip()}"
-                asn_list.append(asn_info)
-        except IndexError:
-            continue
-    return asn_list
-
-def update_asn_file(filename, asn_list):
-    """更新 ASN 文件，删除重复项并写入数据"""
-    existing_asns = set()
-    if os.path.exists(filename):
-        with open(filename, "r", encoding='utf-8') as file:
-            existing_asns = set(line.strip() for line in file)
-    
-    new_asns = set(asn_list)
-    all_asns = existing_asns.union(new_asns)
-    
-    with open(filename, "w", encoding='utf-8') as file:
-        # 写入头部信息，仅当文件为空时
-        if not existing_asns:
-            init_file(filename)
+def initFile():
+    localTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    with open("ASN.China.list", "w") as asnFile:
+        asnFile.write("// ASN Information in China. (https://github.com/iuu666/ASN.China) \n")
+        asnFile.write("// Last Updated: UTC " + localTime +"\n")
+        asnFile.write("// Made by iuu, All rights reserved. " + "\n\n")
         
-        # 确保不重复，按顺序写入数据
-        for asn_info in sorted(all_asns):
-            file.write(asn_info + "\n")
-
-def main():
-    filename = "ASN.China.list"
+def saveLatestASN():
     url = "https://bgp.he.net/country/CN"
-    
-    html = fetch_asn_data(url)  # 抓取数据
-    if html:
-        asn_list = parse_asn_data(html)  # 解析数据
-        if asn_list:  # 仅当解析到数据时才更新
-            update_asn_file(filename, asn_list)  # 更新文件
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+    }
+    r = requests.get(url=url, headers=headers).text
+    tree = etree.HTML(r)
+    asns = tree.xpath('//*[@id="asns"]/tbody/tr')
+    initFile()
+    for asn in asns:
+        asnNumber = asn.xpath('td[1]/a')[0].text.replace('AS', '')
+        asnName = asn.xpath('td[2]')[0].text
+        if asnName != None:
+            asnInfo = "IP-ASN,{} // {}".format(asnNumber, asnName)
+            with open("ASN.China.list", "a", encoding='utf-8') as asnFile:
+                asnFile.write(asnInfo)
+                asnFile.write("\n")
 
-if __name__ == "__main__":
-    main()
+saveLatestASN()

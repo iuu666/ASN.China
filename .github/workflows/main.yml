@@ -1,52 +1,33 @@
-name: Update ASN and IP List
+name: 更新 ASN 和 IP 列表
 
 on: 
   push:
-    paths:
-      - 'scripts/**'
   workflow_dispatch:
   schedule:
-    - cron: "15 15 * * *"  # 每天北京时间晚上11点15分触发
+    - cron: "00 23 * * *" # 每天 UTC 时间 23:00
 
 permissions:
   contents: write
 
 jobs:
-  update:
+  build: 
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Set up Python 3.8
+      - name: 设置 Python 3.8
         uses: actions/setup-python@v4
         with:
           python-version: 3.8
-
-      - name: Install dependencies
+      - name: 安装依赖
         run: |
-          python -m venv venv
-          source venv/bin/activate
           python -m pip install --upgrade pip
           pip install requests lxml
-
-      - name: Run IP Update Script
+      - name: 运行脚本
         run: |
-          source venv/bin/activate
           python scripts/ChinaIP.py
-        continue-on-error: true
-
-      - name: Run ASN Update Script
-        run: |
-          source venv/bin/activate
           python scripts/ChinaASN.py
-        continue-on-error: true
-
-      - name: Check for errors
-        if: failure()
-        run: echo "Error occurred while running scripts" && exit 1
-
-      - name: Auto-commit changes
+      - name: 提交更新
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: Update IP and ASN Lists
+          commit_message: "更新 IP 列表和 ASN 列表"

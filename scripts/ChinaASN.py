@@ -2,14 +2,16 @@ import os
 import requests
 from lxml import etree
 import time
+from datetime import datetime, timedelta
 
 def init_file(filename):
     """初始化文件，写入文件头部信息"""
     if not os.path.exists(filename):  # 仅当文件不存在时才创建
-        local_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        local_time = datetime.utcnow() + timedelta(hours=8)  # 将 UTC 时间转换为 CST 时间
+        local_time_str = local_time.strftime("%Y-%m-%d %H:%M:%S")
         with open(filename, "w", encoding='utf-8') as asn_file:
             asn_file.write("// ASN Information in China. (https://github.com/iuu666/ASN.China)\n")
-            asn_file.write("// Last Updated: UTC " + local_time + "\n")
+            asn_file.write("// Last Updated: CST " + local_time_str + "\n")
             asn_file.write("// Made by iuu, All rights reserved.\n\n")
 
 def fetch_asn_data(url):

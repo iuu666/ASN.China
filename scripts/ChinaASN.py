@@ -7,7 +7,8 @@ def initFile():
     with open("ASN.China.list", "w") as asnFile:
         asnFile.write("// ASN Information in China. (https://github.com/iuu666/ASN.China) \n")
         asnFile.write("// Last Updated: UTC " + localTime + "\n")
-
+        asnFile.write("// Made by iuu, All rights reserved. " + "\n\n")
+        
 def saveLatestASN():
     url = "https://bgp.he.net/country/CN"
     headers = {

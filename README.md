@@ -17,7 +17,7 @@ ChinaASN和IP数据库的实时更新
 ```
 [Rule]
 # ASN.China
-RULE-SET, https://raw.githubusercontent.com/missuo/ASN-China/main/ASN.China.list, Direct
+RULE-SET,https://raw.githubusercontent.com/iuu666/ASN.China/main/ASN.China.list,Direct
 ```
 
 ### Quantumult X

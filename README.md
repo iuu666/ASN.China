@@ -26,11 +26,3 @@ RULE-SET, https://raw.githubusercontent.com/missuo/ASN-China/main/ASN.China.list
 # China ASN List
 https://raw.githubusercontent.com/missuo/ASN-China/main/ASN.China.list, tag=ChinaASN, force-policy=direct, update-interval=86400, opt-parser=true, enabled=true
 ```
-
-
-
-## Author
-
-**ASN-China** © [Vincent Young](https://github.com/missuo), Released under the [MIT](./LICENSE) License.<br>
-
-

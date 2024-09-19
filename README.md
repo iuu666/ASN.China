@@ -1,4 +1,4 @@
-# ChinaASN or IP
+# ChinaASN and IP
 
 - 每日自动更新
 

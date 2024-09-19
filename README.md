@@ -1,7 +1,7 @@
 # ChinaASN or IP
 - 每日自动更新
 
-## 在应用中使用
+## 应用中使用
 ### Surge
 ```
 [Rule]

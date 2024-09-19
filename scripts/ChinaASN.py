@@ -1,7 +1,7 @@
 import os
 import requests
 from lxml import etree
-import time
+import json
 from datetime import datetime, timedelta
 
 def init_file(filename):
@@ -9,18 +9,19 @@ def init_file(filename):
     if not os.path.exists(filename):  # 仅当文件不存在时才创建
         local_time = datetime.utcnow() + timedelta(hours=8)  # 将 UTC 时间转换为 CST 时间
         local_time_str = local_time.strftime("%Y-%m-%d %H:%M:%S")
-        with open(filename, "w", encoding='utf-8') as asn_file:
-            asn_file.write("// ASN Information in China. (https://github.com/iuu666/ASN.China)\n")
-            asn_file.write("// Last Updated: CST " + local_time_str + "\n")
-            asn_file.write("// Made by iuu, All rights reserved.\n\n")
+        header_info = f"// {os.path.basename(filename)}. (https://github.com/iuu666/ASN.China)\n"
+        header_info += f"// Last Updated: CST {local_time_str}\n"
+        header_info += "// Made by iuu, All rights reserved.\n\n"
+        with open(filename, "w", encoding='utf-8') as file:
+            file.write(header_info)
 
 def fetch_asn_data(url):
     """从指定 URL 抓取 ASN 数据"""
     headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0"
     }
     try:
-        response = requests.get(url=url, headers=headers)
+        response = requests.get(url, headers=headers)
         response.raise_for_status()
     except requests.RequestException as e:
         print(f"Error fetching data: {e}")

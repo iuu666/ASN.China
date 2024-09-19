@@ -4,7 +4,7 @@ on:
   push:
   workflow_dispatch:
   schedule:
-    - cron: "45 03 * * *"
+    - cron: "00 04 * * *"
 
 jobs:
   build: 
@@ -24,6 +24,6 @@ jobs:
         run: |
           python scripts/ChinaIP.py
           python scripts/ChinaASN.py
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Update IP List

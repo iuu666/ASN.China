@@ -14,7 +14,7 @@ def init_file(filename):
     # 仅当文件不存在时才创建
     if not os.path.exists(filename):
         with open(filename, "w", encoding='utf-8') as file:
-            file.write(header_info + "\n")  # 在写入头部信息后加一个换行
+            file.write(header_info + "\n")  # 在头部信息后添加一个空白行
 
 def fetch_asn_data(url):
     """从指定 URL 抓取 ASN 数据"""

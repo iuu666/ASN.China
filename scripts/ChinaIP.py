@@ -1,9 +1,3 @@
-
-### 更新后的代码
-
-将 `init_file` 函数中的头部信息修改为不包含“Data for”的版本：
-
-```python
 import requests
 from lxml import etree
 import json

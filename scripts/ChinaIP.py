@@ -1,7 +1,6 @@
 import os
 import requests
 from lxml import etree
-import json
 from datetime import datetime, timedelta
 
 def init_file(filename):
@@ -42,29 +41,33 @@ def parse_ip_data(html):
             continue
     return ip_list
 
-def save_ip_data(filename, ip_list):
-    """将 IP 数据保存到文件，避免重复"""
+def update_ip_file(filename, ip_list):
+    """更新 IP 文件，删除重复项并写入数据"""
     existing_ips = set()
     if os.path.exists(filename):
-        with open(filename, "r", encoding='utf-8') as ip_file:
-            existing_ips = set(line.strip() for line in ip_file)
+        with open(filename, "r", encoding='utf-8') as file:
+            existing_ips = set(line.strip() for line in file)
     
-    with open(filename, "a", encoding='utf-8') as ip_file:
-        for ip_info in ip_list:
-            if ip_info not in existing_ips:
-                ip_file.write(ip_info + "\n")
-                existing_ips.add(ip_info)
+    new_ips = set(ip_list)
+    all_ips = existing_ips.union(new_ips)
+    
+    with open(filename, "w", encoding='utf-8') as file:
+        # Write header if file was newly created
+        if not existing_ips:
+            init_file(filename)
+        
+        for ip_info in sorted(all_ips):
+            file.write(ip_info + "\n")
 
 def main():
     filename = "IP.China.list"
     url = "https://example.com/ipdata"
     
-    init_file(filename)  # 初始化文件
     html = fetch_ip_data(url)  # 抓取数据
     if html:
         ip_list = parse_ip_data(html)  # 解析数据
-        if ip_list:  # 仅当解析到数据时才保存
-            save_ip_data(filename, ip_list)  # 保存数据
+        if ip_list:  # 仅当解析到数据时才更新
+            update_ip_file(filename, ip_list)  # 更新文件
 
 if __name__ == "__main__":
     main()

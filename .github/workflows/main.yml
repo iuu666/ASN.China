@@ -1,6 +1,6 @@
 name: Update ASN and IP List
 
-on: 
+on:
   push:
     paths:
       - 'scripts/**'
@@ -27,7 +27,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('scripts/**/*.py') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 

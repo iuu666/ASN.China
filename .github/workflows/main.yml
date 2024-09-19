@@ -6,7 +6,7 @@ on:
       - 'scripts/**'
   workflow_dispatch:
   schedule:
-    - cron: "15 23 * * *"  # 每天北京时间晚上11点15分触发
+    - cron: "15 15 * * *"  # 每天北京时间晚上11点15分触发
 
 permissions:
   contents: write

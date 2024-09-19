@@ -12,17 +12,17 @@ ChinaASN和IP数据库的实时更新
 - [cbuijs/ipasn](https://github.com/cbuijs/ipasn)
 
 
-## Use in proxy app
+## 在应用中使用
 ### Surge
 ```
 [Rule]
-# > China ASN List
+# ASN.China
 RULE-SET, https://raw.githubusercontent.com/missuo/ASN-China/main/ASN.China.list, Direct
 ```
 
 ### Quantumult X
 ```
 [filter_remote]
-# China ASN List
+# ASN.China
 https://raw.githubusercontent.com/missuo/ASN-China/main/ASN.China.list, tag=ChinaASN, force-policy=direct, update-interval=86400, opt-parser=true, enabled=true
 ```

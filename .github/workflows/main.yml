@@ -6,7 +6,7 @@ on:
       - 'scripts/**'
   workflow_dispatch:
   schedule:
-    - cron: "35 14 * * *"
+    - cron: "15 23 * * *"  # 每天北京时间晚上11点15分触发
 
 permissions:
   contents: write
@@ -22,14 +22,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: 3.8
-
-      - name: Cache pip
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
 
       - name: Install dependencies
         run: |

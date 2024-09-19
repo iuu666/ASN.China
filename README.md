@@ -40,8 +40,7 @@ https://raw.githubusercontent.com/missuo/ASN-China/main/ASN.China.list, tag=Chin
 ### IP Information
 - [cbuijs/ipasn](https://github.com/cbuijs/ipasn)
 
-## Author's ASN
-**[AS206729](https://bgp.he.net/AS206729)**
+
 
 
 ## Author

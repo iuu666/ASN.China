@@ -6,7 +6,7 @@ on:
       - 'scripts/**'
   workflow_dispatch:
   schedule:
-    - cron: "00 23 * * *"
+    - cron: "32 22 * * *"
 
 permissions:
   contents: write

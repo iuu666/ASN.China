@@ -2,7 +2,7 @@ import requests
 from lxml import etree
 from datetime import datetime, timedelta
 
-def initFile():
+def initFile(file_name):
     # 获取当前的 UTC 时间
     utcTime = datetime.utcnow()
     # 将 UTC 时间转换为 CST (UTC+8)
@@ -11,10 +11,10 @@ def initFile():
     localTime = chinaTime.strftime("%Y-%m-%d %H:%M:%S")
     
     # 初始化文件并写入头部信息
-    with open("ASN.China.list", "w", encoding='utf-8') as asnFile:
-        asnFile.write("// ASN Information in China. (https://github.com/iuu666/ASN.China) \n")
-        asnFile.write("// Last Updated: CST " + localTime + "\n")
-        asnFile.write("// Made by iuu, All rights reserved. " + "\n\n")
+    with open(file_name, "w", encoding='utf-8') as file:
+        file.write(f"// ASN Information in {file_name.replace('.list', '')}. (https://github.com/iuu666/ASN.China) \n")
+        file.write(f"// Last Updated: CST {localTime}\n")
+        file.write("// Made by iuu, All rights reserved. \n\n")
 
 def saveLatestASN():
     # BGP ASN 数据的 URL
@@ -30,8 +30,10 @@ def saveLatestASN():
     # 提取 ASN 信息
     asns = tree.xpath('//*[@id="asns"]/tbody/tr')
     
+    # 文件名
+    file_name = "ASN.China.list"
     # 初始化文件
-    initFile()
+    initFile(file_name)
     
     # 写入 ASN 信息到文件
     for asn in asns:
@@ -41,11 +43,11 @@ def saveLatestASN():
         asnName = asn.xpath('td[2]')[0].text
         if asnName is not None:
             # 格式化 ASN 信息
-            asnInfo = "IP-ASN,{} // {}".format(asnNumber, asnName)
+            asnInfo = f"IP-ASN,{asnNumber} // {asnName}"
             # 追加 ASN 信息到文件
-            with open("ASN.China.list", "a", encoding='utf-8') as asnFile:
-                asnFile.write(asnInfo)
-                asnFile.write("\n")
+            with open(file_name, "a", encoding='utf-8') as file:
+                file.write(asnInfo)
+                file.write("\n")
 
 # 执行函数，保存最新的 ASN 信息
 saveLatestASN()

@@ -7,7 +7,7 @@
 - **IP.China.list**: 包含与中国相关的所有 IP 地址。
 - **IPv4.China.list**: 包含与中国相关的 IPv4 地址。
 - **IPv6.China.list**: 包含与中国相关的 IPv6 地址。
-- **ASN.list**: 包含与中国相关的 ASN（自治系统号码）信息。
+- **ASN.China.list**: 包含与中国相关的 ASN（自治系统号码）信息。
 
 ## 数据来源
 

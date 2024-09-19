@@ -1,7 +1,6 @@
 import os
 import requests
 from lxml import etree
-import json
 from datetime import datetime, timedelta
 
 def init_file(filename):
@@ -44,29 +43,33 @@ def parse_asn_data(html):
             continue
     return asn_list
 
-def save_asn_data(filename, asn_list):
-    """将 ASN 数据保存到文件，避免重复"""
+def update_asn_file(filename, asn_list):
+    """更新 ASN 文件，删除重复项并写入数据"""
     existing_asns = set()
     if os.path.exists(filename):
-        with open(filename, "r", encoding='utf-8') as asn_file:
-            existing_asns = set(line.strip() for line in asn_file)
+        with open(filename, "r", encoding='utf-8') as file:
+            existing_asns = set(line.strip() for line in file)
     
-    with open(filename, "a", encoding='utf-8') as asn_file:
-        for asn_info in asn_list:
-            if asn_info not in existing_asns:
-                asn_file.write(asn_info + "\n")
-                existing_asns.add(asn_info)
+    new_asns = set(asn_list)
+    all_asns = existing_asns.union(new_asns)
+    
+    with open(filename, "w", encoding='utf-8') as file:
+        # Write header if file was newly created
+        if not existing_asns:
+            init_file(filename)
+        
+        for asn_info in sorted(all_asns):
+            file.write(asn_info + "\n")
 
 def main():
     filename = "ASN.China.list"
     url = "https://bgp.he.net/country/CN"
     
-    init_file(filename)  # 初始化文件
     html = fetch_asn_data(url)  # 抓取数据
     if html:
         asn_list = parse_asn_data(html)  # 解析数据
-        if asn_list:  # 仅当解析到数据时才保存
-            save_asn_data(filename, asn_list)  # 保存数据
+        if asn_list:  # 仅当解析到数据时才更新
+            update_asn_file(filename, asn_list)  # 更新文件
 
 if __name__ == "__main__":
     main()

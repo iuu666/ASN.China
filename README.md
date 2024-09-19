@@ -1,6 +1,13 @@
 # ChinaASN or IP
 - 每日自动更新
 
+
+## 数据来源
+### ASN： [bgp.he.net](https://bgp.he.net/country/CN)
+
+### IP： [cbuijs/ipasn](https://github.com/cbuijs/ipasn)
+
+
 ## 应用中使用
 ### Surge
 ```
@@ -15,8 +22,3 @@ RULE-SET, https://raw.githubusercontent.com/iuu666/ASN.China/main/ASN.China.list
 # ChinaASN
 https://raw.githubusercontent.com/iuu666/ASN.China/main/IP.China.list, tag=ChinaASN, force-policy=direct, update-interval=86400, opt-parser=true, enabled=true
 ```
-
-## 数据来源
-### ASN： [bgp.he.net](https://bgp.he.net/country/CN)
-
-### IP： [cbuijs/ipasn](https://github.com/cbuijs/ipasn)

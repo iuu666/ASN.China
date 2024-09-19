@@ -4,8 +4,10 @@ on:
   push:
   workflow_dispatch:
   schedule:
-    - cron: "00 04 * * *"
+    - cron: "05 04 * * *"
 
+permissions:
+  contents: write
 jobs:
   build: 
     runs-on: ubuntu-latest

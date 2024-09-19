@@ -17,8 +17,6 @@ https://raw.githubusercontent.com/iuu666/ASN.China/main/IP.China.list, tag=China
 ```
 
 ## 数据来源
-### ASN
-- [bgp.he.net](https://bgp.he.net/country/CN)
+### ASN： [bgp.he.net](https://bgp.he.net/country/CN)
 
-### IP
-- [cbuijs/ipasn](https://github.com/cbuijs/ipasn)
+### IP： [cbuijs/ipasn](https://github.com/cbuijs/ipasn)

@@ -34,9 +34,9 @@ def fetch_and_save(url, file_name):
     with open(file_name, "w", encoding='utf-8') as file:
         # 写入头部信息
         file.write(get_header(file_name, count))
-        # 写入数据
+        # 写入数据，并为每条数据添加 "IP-CIDR," 前缀
         for i in x:
-            file.write(i)
+            file.write(f"IP-CIDR,{i}")
             file.write('\n')
 
 # 各种 IP 列表的 URL

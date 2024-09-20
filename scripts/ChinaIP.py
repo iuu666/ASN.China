@@ -19,6 +19,20 @@ def get_header(file_name, count):
 """
     return header
 
+# 内容验证函数
+def validate_content(data, expected_min_count=100):
+    # 检查记录数量
+    if len(data) < expected_min_count:
+        print(f"Warning: Data count is less than expected ({len(data)} records). Possible data loss.")
+        return False
+    
+    # 检查关键字（示例：检测是否存在 '0.0.0.0/0' 这样的模式）
+    if not any("0.0.0.0/0" in line for line in data):
+        print("Warning: Data does not contain expected pattern. Possible data issue.")
+        return False
+    
+    return True
+
 def fetch_and_save(url, file_name):
     # 发起 GET 请求获取页面内容
     r = requests.get(url).text
@@ -28,8 +42,15 @@ def fetch_and_save(url, file_name):
     asns = tree.xpath('//*[@data-target="react-app.embeddedData"]')[0].text
     # 解析 JSON 数据
     x = json.loads(asns)['payload']['blob']['rawLines']
+    
+    # 验证内容
+    if not validate_content(x):
+        print(f"Error: Validation failed for {file_name}. Data not saved.")
+        return
+    
     # 计算总记录数
     count = len(x)
+    
     # 保存数据到文件
     with open(file_name, "w", encoding='utf-8') as file:
         # 写入头部信息

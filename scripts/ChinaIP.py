@@ -19,17 +19,59 @@ def get_header(file_name, count):
 """
     return header
 
+# 内容验证函数
+def validate_content(data, expected_min_count=100):
+    print(f"Debug: Data count = {len(data)}")  # 调试信息
+    # 检查记录数量
+    if len(data) < expected_min_count:
+        print(f"Warning: Data count is less than expected ({len(data)} records). Possible data loss.")
+        return False
+    
+    # 检查关键字
+    contains_keyword = any("0.0.0.0/0" in line for line in data)
+    print(f"Debug: Contains '0.0.0.0/0' = {contains_keyword}")  # 调试信息
+    if not contains_keyword:
+        print("Warning: Data does not contain expected pattern. Possible data issue.")
+        return False
+    
+    return True
+
 def fetch_and_save(url, file_name):
     # 发起 GET 请求获取页面内容
-    r = requests.get(url).text
+    r = requests.get(url)
+    if r.status_code != 200:
+        print(f"Error: Failed to fetch data from {url}. Status code: {r.status_code}")
+        return
+    r_text = r.text
+    
     # 解析 HTML 内容
-    tree = etree.HTML(r)
+    tree = etree.HTML(r_text)
     # 提取嵌入的数据
-    asns = tree.xpath('//*[@data-target="react-app.embeddedData"]')[0].text
+    asns_element = tree.xpath('//*[@data-target="react-app.embeddedData"]')
+    if not asns_element:
+        print("Error: Failed to locate the embedded data element.")
+        return
+    
+    asns = asns_element[0].text
+    if not asns:
+        print("Error: Extracted data is empty.")
+        return
+    
     # 解析 JSON 数据
-    x = json.loads(asns)['payload']['blob']['rawLines']
+    try:
+        x = json.loads(asns)['payload']['blob']['rawLines']
+    except (json.JSONDecodeError, KeyError) as e:
+        print(f"Error: Failed to parse JSON data. {str(e)}")
+        return
+    
+    # 验证内容
+    if not validate_content(x):
+        print(f"Error: Validation failed for {file_name}. Data not saved.")
+        return
+    
     # 计算总记录数
     count = len(x)
+    
     # 保存数据到文件
     with open(file_name, "w", encoding='utf-8') as file:
         # 写入头部信息

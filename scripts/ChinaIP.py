@@ -43,9 +43,18 @@ def fetch_and_save(url, file_name, expected_min_count=100):
             print("Error: Extracted data is empty.")
             return
 
-        # 解析 JSON 数据
+        # 解析 JSON 数据。GitHub 代码页曾把行数据放在 payload.blob，
+        # 现在放在带点号的 payload["codeViewBlobLayoutRoute.StyledBlob"]。
         try:
-            x = json.loads(asns)['payload']['blob']['rawLines']  # 解析 JSON 数据并提取行
+            payload = json.loads(asns)["payload"]
+            blob = payload.get("blob") if isinstance(payload.get("blob"), dict) else None
+            styled = payload.get("codeViewBlobLayoutRoute.StyledBlob")
+            if isinstance(blob, dict) and blob.get("rawLines"):
+                x = blob["rawLines"]
+            elif isinstance(styled, dict) and styled.get("rawLines"):
+                x = styled["rawLines"]
+            else:
+                raise KeyError("rawLines")
         except (json.JSONDecodeError, KeyError) as e:  # 处理 JSON 解析错误
             print(f"Error: Failed to parse JSON data. {str(e)}")
             return
